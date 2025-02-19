@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title-card">
+            <h1>Aplikasi Segmentasi Pelanggan Kadatuan Koffie</h1>
+        </div>
+    </div>
+
+    <div class="table-container" >
+        <h3>Hasil transformasi Min-Max Normalization pada data RFM:</h3>
+        <div class="card">
+        {% if transformed_rfm is not none %}
+            <div class="scrollable-table">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th> <!-- Menambahkan kolom "No" -->
+                            {% for col in transformed_rfm.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for idx, row in transformed_rfm.iterrows() %}
+                        <tr>
+                            <td>{{ idx + 1 }}</td> <!-- Menampilkan nomor urut untuk setiap baris -->
+                            {% for cell in row %}
+                            <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Data RFM belum tersedia. Silakan lakukan preprocessing terlebih dahulu.</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

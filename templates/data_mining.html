@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="content">
+  <div class="header">
+    <div class="title-card">
+      <h1>Aplikasi Segmentasi Pelanggan Kadatuan Koffie</h1>
+    </div>
+  </div>
+
+  <!-- Form untuk memilih jumlah cluster -->
+  <form action="/data_mining" method="POST" class="kmeans-form">
+    <label for="num_clusters">Jumlah Cluster (K):</label>
+    <input type="number" id="num_clusters" name="num_clusters" min="2" value="3" required>
+    <button type="submit">Proses K-Means</button>
+  </form>
+
+  <!-- Tampilkan hasil clustering -->
+  {% if clustering_results is not none %}
+    <h2>Hasil Clustering:</h2>
+    <div class="scrollable-table">
+      {{ clustering_results.to_html(classes='data-table', index=False) | safe }}
+    </div>
+
+    <!-- Tampilkan nilai DBI -->
+    <h2>Evaluasi Davies-Bouldin Index (DBI):</h2>
+    <p>
+      Nilai DBI untuk clustering ini adalah: <strong>{{ dbi_score }}</strong>
+    </p>
+    <p>
+      Catatan: Semakin kecil nilai DBI, semakin baik kualitas clustering.
+    </p>
+    <!-- Tambahkan tombol download jika ada hasil clustering -->
+
+  {% else %}
+    <p>Belum ada hasil clustering. Silakan pilih jumlah cluster dan jalankan proses K-Means.</p>
+  {% endif %}
+</div>
+{% endblock %}

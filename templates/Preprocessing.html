@@ -1,0 +1,156 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title-card">
+            <h1>Aplikasi Segmentasi Pelanggan Kadatuan Koffie</h1>
+        </div>
+    </div>
+
+    <div class="menu-cards">
+        <div class="menu-card" onclick="showSection('preprocessing-section')">
+            <h3>Preprocessing</h3>
+        </div>
+        <div class="menu-card" onclick="showSection('rfm-section')">
+            <h3>RFM Analysis</h3>
+        </div>
+    </div>
+
+    <!-- Section Preprocessing -->
+    <div id="preprocessing-section" class="section" style="display: none;">
+        <!-- Menampilkan pesan Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+      
+        <!-- Bagian Missing Records -->
+        <div class="missing-records">
+            <h3>Nilai Null</h3>
+            {% if missing_records %}
+                {% for key, missing in missing_records.items() %}
+                    <div class="card">
+                        <h4>Dataset: {{ key }}</h4>
+                        {% if not missing.empty %}
+                            <div class="scrollable-table">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            {% for col in missing.columns %}
+                                                <th>{{ col }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for idx, row in missing.iterrows() %}
+                                        <tr>
+                                            <td>{{ idx + 1 }}</td>
+                                            {% for cell in row %}
+                                            <td>{{ cell }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>Tidak ada nilai kosong pada baris {{ key }}.</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No datasets available to check for missing records.</p>
+            {% endif %}
+        </div>
+  
+        <!-- Bagian Transformed Data -->
+        <div class="table-container">
+            <h3>Transformed Data</h3>
+            {% if data_transformed %}
+                <div class="vertical-cards">
+                    {% for key, data in data_transformed.items() %}
+                        <div class="card">
+                            <h4>Dataset: {{ key }}</h4>
+                            <div class="scrollable-table">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            {% for col in data.columns %}
+                                                <th>{{ col }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for idx, row in data.iterrows() %}
+                                        <tr>
+                                            <td>{{ idx + 1 }}</td>
+                                            {% for cell in row %}
+                                            <td>{{ cell }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No data available. Please upload data first.</p>
+            {% endif %}
+        </div>
+    </div>
+  
+    <!-- Section RFM Analysis -->
+    <div id="rfm-section" class="section" style="display: none;">
+        <h3>RFM Analysis</h3>
+        {% if rfm_results is not none %}
+            <div class="scrollable-table">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            {% for col in rfm_results.columns %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for idx, row in rfm_results.iterrows() %}
+                        <tr>
+                            <td>{{ idx + 1 }}</td>
+                            {% for cell in row %}
+                            <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>RFM Analysis is not available. Please ensure "Data Transaksi" contains required columns.</p>
+        {% endif %}
+    </div>
+  
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Show preprocessing section by default
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('preprocessing-section');
+        });
+    </script>
+  
+{% endblock %}

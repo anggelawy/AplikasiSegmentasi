@@ -1,0 +1,111 @@
+<html>
+  <head>
+    <title>Data Mining Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <img
+          alt="Data Mining Logo"
+          src="{{ url_for('static', filename='kadatuan.png') }}"
+        />
+        <h2>Data Mining</h2>
+        <ul>
+            <li>
+                <a href="/data_selection">
+                    <i class="fas fa-database"></i> Data Selection
+                </a>
+            </li>
+            
+            <!-- Dropdown Menu -->
+            <li class="dropdown">
+              <a href="#" class="dropdown-btn">
+                  <i class="fas fa-cogs"></i>Proses Data Mining
+                  <i class="fas fa-chevron-down"></i>
+              </a>
+              <ul class="dropdown-content">
+                  <li>
+                      <a href="/preprocessing">
+                          <i class="fas fa-filter"></i> Preprocessing
+                      </a>
+                  </li>
+                  <li>
+                      <a href="/transformation">
+                          <i class="fas fa-exchange-alt"></i> Transformation
+                      </a>
+                  </li>
+                  <li>
+                      <a href="/data_mining">
+                          <i class="fas fa-chart-line"></i> Data Mining dan Evaluasi
+                      </a>
+                  </li>
+              </ul>
+          </li>          
+          <li>
+                <a href="/recommendation">
+                    <i class="far fa-file"></i> Rekomendasi Promosi
+                </a>
+            </li>
+        </ul>
+    </div>    
+      </div>
+    </div>
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        let errorMessages = [];
+        let successMessages = [];
+  
+        {% for category, message in messages %}
+          if ("{{ category }}" === "error") {
+            errorMessages.push("{{ message }}");
+          } else if ("{{ category }}" === "success") {
+            successMessages.push("{{ message }}");
+          }
+        {% endfor %}
+  
+        // Jika ada pesan error, tampilkan alert dengan tombol OK
+        if (errorMessages.length > 0) {
+          Swal.fire({
+            icon: "error",
+            title: "Pemberitahuan",
+            text: errorMessages[0], // Ambil hanya 1 pesan pertama
+            confirmButtonColor: "#d33"
+          });
+        } 
+        
+        // Jika ada pesan success, tampilkan alert dengan tombol OK
+        else if (successMessages.length > 0) {
+          Swal.fire({
+            icon: "success",
+            title: "Berhasil!",
+            text: successMessages[0], // Ambil hanya 1 pesan pertama
+            confirmButtonColor: "#3085d6"
+          });
+        }
+      });
+    </script>
+  {% endif %}
+  {% endwith %}
+  
+  </body>
+</html>

@@ -1,0 +1,123 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="content">
+    <div class="header">
+        <div class="title-card">
+            <h1>Aplikasi Segmentasi Pelanggan Kadatuan Koffie</h1>
+        </div>
+    </div>
+    <h3>Rekomendasi Promosi Berdasarkan Cluster</h3>
+    <p>
+        Berikut adalah hasil analisis segmentasi pelanggan berdasarkan cluster yang telah dihitung
+        menggunakan K-Means:
+    </p>
+
+    {% if recommendations is not none %}
+        <h2>Segmentasi Pelanggan:</h2>
+        <div class="scrollable-table">
+            {{ recommendations.to_html(classes='data-table', index=False) | safe }}
+        </div>
+
+        <h3>Data Kuesioner dengan Cluster:</h3>
+        {% if merged_data is not none %}
+        <div class="scrollable-table">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Id Pelanggan</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Nama Produk</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Usia</th>
+                        <th>Profesi</th>
+                        <th>Hobi</th>
+                        <th>No Hp</th>
+                        <th>Cluster</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in merged_data.iterrows() %}
+                    <tr>
+                        <td>{{ row[1]['No'] }}</td>
+                        <td>{{ row[1]['Id Pelanggan'] }}</td>
+                        <td>{{ row[1]['Nama Pelanggan'] }}</td>
+                        <td>{{ row[1]['Nama Produk'] }}</td>
+                        <td>{{ row[1]['Jenis Kelamin'] }}</td>
+                        <td>{{ row[1]['Usia'] }}</td>
+                        <td>{{ row[1]['Profesi'] }}</td>
+                        <td>{{ row[1]['Hobi'] }}</td>
+                        <td>{{ row[1]['No Hp'] }}</td>
+                        <td>{{ row[1]['Cluster'] }}</td>
+                        <td>{{ row[1]['Segment'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <h3>Penjelasan Cluster:</h3>
+        <div class="scrollable-table">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Cluster</th>
+                        <th>Segment</th>
+                        <th>Deskripsi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Pelanggan Loyal</td>
+                        <td>Menawarkan berupa promosi sebagai pelanggan yang sering 
+                            bertransaksi seperti “Daftar sekarang untuk mendapatkan 
+                            diskon 10% setiap pembelian” , dengan program loyalty ini 
+                            bisa memberikan diskon khusus kepada produk kopi asli 
+                            yang baik untuk olahraga dan bisa dikombinasikan diskon 
+                            untuk produk Café Latte, Espresso Single, Espresso Coklat 
+                            dan Kadatuan Creamy Latte
+                            </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Pelanggan Baru</td>
+                        <td>Menawarkan promosi seperti “Kopi Pertama Gratis” untuk 
+                            pelanggan baru dan menawarkan produk asli Kadatuan 
+                            Koffie seperti Arabika Jawara ataupun Robusta Wani. Untuk 
+                            mengenalkan rasa penasaran kepada pelanggan baru. Bisa 
+                            juga menawarkan berupa kartu member yang diberikan 
+                            diskon langsung seperti “Diskon 10% untuk pembelian 
+                            kedua jika menggunakan kartu member” bisa diterapkan ke 
+                            produk Kopi Susu Cocopandan, Espresso Single, Robusta 
+                            Wani 250gram dan Kadatuan Mochacino</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Pelanggan Sesekali</td>
+                        <td>Menawarkan berupa promosi seperti “voucher untuk
+                            transaksi berikutnya berlaku 1 minggu”. Dan diskon khusus 
+                            untuk pembelian kopi setelah pelanggan melakukan olahraga 
+                            dengan menunjukkan catatan olahraganya sehingga bisa 
+                            mendapatkan diskon 15 % setiap Sabtu dari 08.00-11.00. 
+                            Bisa diterapkan ke produk Kopi Susu Caramel, Kadatuan 
+                            Cold Brew 250gram, Robusta Wani 1Kg dan Arabika Jawara 
+                            250gram</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    {% else %}
+    <h3>Hasil Data Final:</h3>
+{% if merged_data is not none %}
+    <div class="scrollable-table">
+        {{ merged_data.to_html(classes='data-table', index=False) | safe }}
+    </div>
+{% else %}
+    <p>Data final belum tersedia. Silakan lakukan proses Data Mining dan rekomendasi.</p>
+{% endif %}
+        <p>Belum ada hasil rekomendasi. Silakan lakukan proses Data Mining terlebih dahulu.</p>
+    {% endif %}
+</div>
+{% endblock %}
