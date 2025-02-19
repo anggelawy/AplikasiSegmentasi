@@ -5,8 +5,8 @@ import os
 
 # Class utama yang mewarisi semua fitur
 class KadatuanApps(Flask):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, import_name, **kwargs):
+        super().__init__(import_name, **kwargs)
         self.config['UPLOAD_FOLDER'] = 'uploads'
         self.secret_key = 'supersecretkey'
         if not os.path.exists(self.config['UPLOAD_FOLDER']):
@@ -202,7 +202,6 @@ class KadatuanApps(Flask):
 
     #     return send_file(output, as_attachment=True, download_name="hasil_clustering.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
-
+app = KadatuanApps(__name__)      
 if __name__ == '__main__':
-    app = KadatuanApps(__name__)
     app.run(debug=True)
