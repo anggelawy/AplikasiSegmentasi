@@ -204,5 +204,5 @@ class KadatuanApps(Flask):
 
 
 if __name__ == '__main__':
-    apps_kadatuan = KadatuanApps()
-    apps_kadatuan.run(debug=True)
+    app = KadatuanApps()
+    app.run(debug=True)
