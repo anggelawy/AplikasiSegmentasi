@@ -1,1 +1,1 @@
-web: gunicorn app:KadatuanApps
+web: gunicorn app:app
