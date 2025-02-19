@@ -5,8 +5,8 @@ import os
 
 # Class utama yang mewarisi semua fitur
 class KadatuanApps(Flask):
-    def __init__(self):
-        super().__init__(__name__)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.config['UPLOAD_FOLDER'] = 'uploads'
         self.secret_key = 'supersecretkey'
         if not os.path.exists(self.config['UPLOAD_FOLDER']):
@@ -204,5 +204,5 @@ class KadatuanApps(Flask):
 
 
 if __name__ == '__main__':
-    app = KadatuanApps()
+    app = KadatuanApps(__name__)
     app.run(debug=True)
